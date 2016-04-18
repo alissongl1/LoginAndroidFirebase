@@ -19,16 +19,18 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    private HashMap<String, String> loginSenha = new HashMap<String, String>();
-
     public static final String FIREBASE_REPO = "blinding-heat-9190";
     public static final String FIREBASE_URL = "https://" + FIREBASE_REPO + ".firebaseio.com";
+
+    private HashMap<String, String> loginSenha = new HashMap<String, String>();
+
     private Firebase firebase;
 
     private EditText editTextLogin;
     private EditText editTextPassword;
     private Switch switchFirebase;
     private TextView textViewStatus;
+
     private String login;
     private String password;
 
