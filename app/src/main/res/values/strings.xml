@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">LoginAndroid</string>
+    <string name="login">Login</string>
+    <string name="password">Senha</string>
+    <string name="signin">Sign in</string>
+    <string name="loginFirebase">Login com Firebase</string>
+    <string name="invalid">Usuário e senha não conferem.</string>
+    <string name="feliz">Feliz</string>
+    <string name="triste">Triste</string>
+</resources>
