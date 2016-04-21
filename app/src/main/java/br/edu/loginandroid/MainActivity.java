@@ -19,39 +19,41 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
+    // FIREBASE
     public static final String FIREBASE_REPO = "blinding-heat-9190";
     public static final String FIREBASE_URL = "https://" + FIREBASE_REPO + ".firebaseio.com";
-
-    private HashMap<String, String> loginSenha = new HashMap<String, String>();
-
     private Firebase firebase;
 
+    // LOGIN
     private EditText editTextLogin;
     private EditText editTextPassword;
     private Switch switchFirebase;
     private TextView textViewStatus;
-
+    private HashMap<String, String> loginSenha = new HashMap<String, String>();
     private String login;
     private String password;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // TRANSIÇÃO ENTRE TELAS
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // FIREBASE
         if (savedInstanceState == null){
             Firebase.setAndroidContext(this);
         }
+        // Create a connection to your Firebase database
+        firebase = new Firebase(FIREBASE_URL);
 
+        // LOGIN
         loginSenha.put("edu@email.com", "edu");
-
         editTextLogin = (EditText) findViewById(R.id.editTextLogin);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
         switchFirebase = (Switch) findViewById(R.id.switchFirebase);
 
-        // Create a connection to your Firebase database
-        firebase = new Firebase(FIREBASE_URL);
-
+        // LOGIN COM FIREBASE
         firebase.addAuthStateListener(new Firebase.AuthStateListener() {
             @Override
             public void onAuthStateChanged(AuthData authData) {
@@ -64,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
         AuthData authData = firebase.getAuth();
         if (authData != null) {
             // user authenticated
@@ -75,30 +76,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void signin (View v){
-        login = editTextLogin.getText().toString();
-        password = editTextPassword.getText().toString();
-
-        if(!switchFirebase.isChecked()){
-            if(loginSenha.containsKey(login) && loginSenha.get(login).equals(password)){
-                transitaParaTelaFirebaseShared();
-            }
-            else{
-                editTextPassword.setError(getString(R.string.invalid));
-            }
-        }else{
-            loginComFirebase();
-        }
-    }
-
-    /**
-     *
-     */
+    // TRANSIÇÃO ENTRE TELAS
     private void transitaParaTelaFirebaseShared() {
-        setContentView(R.layout.activity_firebase_shared);
+        setContentView(R.layout.status_firebase_shared);
 
         textViewStatus = (TextView) findViewById(R.id.textViewStatus);
 
+        // FIREBASE
         // Listen for realtime changes
         firebase.child("status").addValueEventListener(new ValueEventListener() {
             @Override
@@ -110,16 +94,39 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // FIREBASE
     public void felizClick (View v){
         firebase.child("status").setValue("Feliz");
     }
-
     public void tristeClick (View v){
         firebase.child("status").setValue("Triste");
     }
 
+    // LOGIN
+    public void signin (View v){
+        // LOGIN
+        login = editTextLogin.getText().toString();
+        password = editTextPassword.getText().toString();
+
+        if(!switchFirebase.isChecked()){
+            if(loginSenha.containsKey(login) && loginSenha.get(login).equals(password)){
+                // TRANSIÇÃO ENTRE TELAS
+                transitaParaTelaFirebaseShared();
+            }
+            else{
+                editTextPassword.setError(getString(R.string.invalid));
+            }
+        }
+        // LOGIN COM FIREBASE
+        else{
+            loginComFirebase();
+        }
+    }
+
+    // LOGIN COM FIREBASE
     private void loginComFirebase() {
 
+        // CRIA USUÁRIO NO FIREBASE COM DADOS PRIVADOS A PARTIR DE EMAIL E SENHA
         firebase.createUser(login, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
             @Override
             public void onSuccess(Map<String, Object> result) {
@@ -132,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        // REALIZA LOGIN NO FIREBASE
         // Create a handler to handle the result of the authentication
         Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
             @Override
@@ -151,10 +158,9 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("authData: ", "Autenticação falhou, " + firebaseError.getMessage());
             }
         };
-
-        // Or with an email/password combination
         firebase.authWithPassword(login, password, authResultHandler);
 
+        // TRANSIÇÃO ENTRE TELAS
         transitaParaTelaFirebaseShared();
 
      }
