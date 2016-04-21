@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/LoginAndroid.iml" filepath="$PROJECT_DIR$/LoginAndroid.iml" />
       <module fileurl="file://$PROJECT_DIR$/LoginAndroidFirebase.iml" filepath="$PROJECT_DIR$/LoginAndroidFirebase.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
 </project>
