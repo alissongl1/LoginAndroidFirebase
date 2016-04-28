@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private String password;
 
     // FIREBASE
-    public static final String FIREBASE_REPO = "blinding-heat-9190";
+    public static final String FIREBASE_REPO = "loginandroidfirebase";
     public static final String FIREBASE_URL = "https://" + FIREBASE_REPO + ".firebaseio.com";
     private Firebase firebase;
 
@@ -104,7 +104,9 @@ public class MainActivity extends AppCompatActivity {
         firebase.child("status").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snap) {
-                textViewStatus.setText(snap.getValue().toString());
+                if(snap.getValue() != null){
+                    textViewStatus.setText(snap.getValue().toString());
+                }
             }
             @Override public void onCancelled(FirebaseError error) { }
         });
